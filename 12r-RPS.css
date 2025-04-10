@@ -1,0 +1,66 @@
+body {
+	background-color: rgb(25, 25, 25) white;
+	font-family: arial;
+}
+
+.title {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.move-icon {
+	height: 50px;
+	/*margin-top: 10px;*/
+}
+
+.move-button {
+	background-color: transparent;
+	border: 3px solid white;
+	width: 120px;
+	height: 120px;
+	border-radius: 60px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.result {
+	font-size: 30px;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.score {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.wins {
+	color: lime;
+}
+
+.losses {
+	color: magenta;
+}
+
+.ties {
+	color: cyan;
+}
+
+.reset-score-button {
+	font-size: 15px;
+	padding: 8px 15px;
+	cursor: pointer;
+	border: 2px solid magenta;
+	color: magenta;
+	background-color: transparent;
+}
+
+.auto-play-button {
+	font-size: 15px;
+	padding: 8px 15px;
+	cursor: pointer;
+	border: 2px solid lime;
+	color: lime;
+	background-color: transparent;
+}
