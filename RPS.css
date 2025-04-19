@@ -1,7 +1,7 @@
 :root {
   --text-color: white;
   --background-color: rgb(25, 25, 25);
-  --heading-color: cyan;
+  --heading-color: #f0f0f0;
   --win-color: lime;
   --lose-color: magenta;
   --tie-color: cyan;
@@ -11,7 +11,7 @@
   :root {
     --text-color: black;
     --background-color: #f0f0f0;
-    --heading-color: #0088aa;
+    --heading-color: #f0f0f0;
     --win-color: green;
     --lose-color: #cc0066;
     --tie-color: #0088aa;
@@ -174,20 +174,6 @@ body {
 }
 
 /* Clean up all animations */
-
-/* Simple pulse animation */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); } 
-  100% { transform: scale(1); }
-}
-
-/* Subtle pulse for clicks */
-@keyframes clickPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); } 
-  100% { transform: scale(1); }
-}
 
 /* Add a pulsing animation for chosen moves - smaller and faster */
 @keyframes pulse {
