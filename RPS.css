@@ -9,7 +9,7 @@ body {
 	padding: 0;
 }
 
-.container, .game-contain {
+.game-container {
     text-align: center;
     width: 420px;
     padding: 20px;
@@ -17,14 +17,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.game-container {
-    width: 420px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 /* Add this to create a container for the buttons */
@@ -38,6 +30,8 @@ body {
 .button-container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 10px; /* Controls spacing between buttons */
     margin: 15px 0;
     width: 100%;
 }
@@ -56,18 +50,24 @@ body {
 }
 
 .move-icon {
-	height: 50px;
-	/*margin-top: 10px;*/
+	height: 80px; /* Make the images bigger */
+	transition: transform 0.1s;
+}
+
+.move-button:hover .move-icon, 
+.move-icon.active {
+	transform: scale(1.1); /* Add effect for hover and active state */
 }
 
 .move-button {
 	background-color: transparent;
-	border: 3px solid white;
-	width: 120px;
-	height: 120px;
-	border-radius: 60px;
-	margin-right: 10px;
+	border: none;
+	padding: 0;
+	margin: 0 5px;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .result-container {
@@ -130,4 +130,182 @@ body {
 	border: 2px solid lime;
 	color: lime;
 	background-color: transparent;
+}
+
+.result-icon {
+    height: 60px; /* Slightly smaller than the main buttons */
+    transition: transform 0.1s;
+    margin: 0 5px;
+}
+
+.result-icon.active {
+    transform: scale(1.1); /* Same effect for hover and active state */
+}
+
+.js-moves {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70px; /* Reserve space even when empty */
+}
+
+/* Clean up all animations */
+
+/* Simple pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); } 
+  100% { transform: scale(1); }
+}
+
+/* Subtle pulse for clicks */
+@keyframes clickPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); } 
+  100% { transform: scale(1); }
+}
+
+/* Add a pulsing animation for chosen moves - smaller and faster */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); } 
+  100% { transform: scale(1); }
+}
+
+/* Add a smaller pulse for click feedback */
+@keyframes smallPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); } 
+  100% { transform: scale(1); }
+}
+
+/* Add a flash animation for results - faster */
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Handle hover effect */
+.move-button:hover .move-icon {
+  transform: scale(1.1); /* Keep hover effect */
+}
+
+/* Handle active state */
+.move-icon.active {
+  transform: scale(1.1); /* Keep active state */
+}
+
+/* Add click animation */
+.move-button:active .move-icon {
+  animation: smallPulse 0.15s ease-in-out;
+}
+
+/* Prevent animation stacking by making these more specific */
+.move-icon.chosen:not(:hover):not(.active) {
+  animation: pulse 0.2s ease-in-out;
+  transform: none;
+}
+
+.js-result.updated {
+  animation: flash 0.3s ease-in-out;
+}
+
+.result-icon.updated {
+  animation: pulse 0.2s ease-in-out;
+}
+
+/* Instructions dropdown styling */
+.instructions-container {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+    padding: 0;
+}
+
+.instructions-toggle {
+    font-size: 15px;
+    padding: 8px 15px;
+    cursor: pointer;
+    border: none;
+    color: cyan;
+    background-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: transform 0.2s;
+}
+
+.instructions-toggle:hover {
+    transform: scale(1.05);
+}
+
+.down-arrow {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-left: 5px;
+    border: 2px solid cyan;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    transition: transform 0.3s;
+    position: relative;
+    top: -2px;
+}
+
+.down-arrow.open {
+    transform: rotate(-135deg);
+    top: 2px;
+}
+
+.instructions-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    text-align: left;
+    padding: 0 20px; /* Add some padding on the sides */
+}
+
+.instructions-content.show {
+    max-height: 200px;
+    opacity: 1;
+    visibility: visible;
+    padding: 10px 0;
+}
+
+.instructions-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    text-align: left;
+    display: inline;
+}
+
+.instructions-content li {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+}
+
+.instructions-content li:before {
+    content: "•";
+    color: cyan;
+    margin-right: 10px;
+}
+
+.instructions-content strong {
+    color: cyan;
+    display: inline-block;
+    min-width: 20px;
+    margin-right: 10px;
+}
+
+.instructions-intro {
+    color: white;
+    margin: 0 0 10px 0;
+    text-align: left;
 }

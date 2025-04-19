@@ -116,6 +116,17 @@ document.body.addEventListener("keydown", (event) => {
 });
 
 function playGame(playerMove) {
+	// Get elements
+	const moveButton = document.querySelector(`.js-choose-${playerMove}`);
+	const moveIcon = moveButton.querySelector('.move-icon');
+	const resultElement = document.querySelector('.js-result');
+	
+	// Apply animation to the chosen move button
+	moveIcon.classList.add('chosen');
+	setTimeout(() => {
+		moveIcon.classList.remove('chosen');
+	}, 300);
+	
 	const computerMove = pickComputerMove();
 
 	let result = "";
@@ -161,12 +172,27 @@ function playGame(playerMove) {
 
 	updateScoreElement();
 
+	// When updating results
+	resultElement.classList.add('updated');
+	setTimeout(() => {
+		resultElement.classList.remove('updated');
+	}, 400);
+
 	document.querySelector(".js-result").innerHTML = result;
 
 	document.querySelector(".js-moves").innerHTML = `You
 			<img src="images/${playerMove}-emoji.png" class="move-icon" />
 			<img src="images/${computerMove}-emoji.png" class="move-icon" />
 			Computer`;
+
+	// When adding result icons
+	const resultIcons = document.querySelectorAll('.result-icon');
+	resultIcons.forEach(icon => {
+		icon.classList.add('updated');
+		setTimeout(() => {
+			icon.classList.remove('updated');
+		}, 300);
+	});
 }
 
 /*
@@ -197,3 +223,21 @@ function pickComputerMove() {
 
 	return computerMove;
 }
+
+// Add to the end of your file if not already present
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.querySelector('.js-instructions-toggle');
+    if (toggleButton) {
+        toggleButton.addEventListener('click', function() {
+            const content = document.querySelector('.js-instructions-content');
+            const arrow = this.querySelector('.down-arrow');
+            
+            // Toggle the content visibility
+            content.classList.toggle('show');
+            arrow.classList.toggle('open');
+            
+            // Log to console to confirm the action is working
+            console.log('Instructions toggled');
+        });
+    }
+});
