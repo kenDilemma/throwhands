@@ -1,11 +1,58 @@
 body {
-	background-color: rgb(25, 25, 25) white;
+	background-color: rgb(25, 25, 25);
 	font-family: arial;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	margin: 0;
+	padding: 0;
+}
+
+.container, .game-contain {
+    text-align: center;
+    width: 420px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-container {
+    width: 420px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Add this to create a container for the buttons */
+.button-containerer {
+	display: flex;
+	justify-content: center;
+	margin: 15px 0;
+	width: 100%;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+    width: 100%;
+}
+
+/* Make the last button not have a right margin */
+.move-button:last-of-type {
+	margin-right: 0;
 }
 
 .title {
+    width: 100%;
+    text-align: center;
 	font-size: 30px;
 	font-weight: bold;
+    margin: 10px 0;
 }
 
 .move-icon {
@@ -21,6 +68,20 @@ body {
 	border-radius: 60px;
 	margin-right: 10px;
 	cursor: pointer;
+}
+
+.result-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.result-container p {
+    margin: 5px 0;
+    text-align: center;
+    width: 100%;
 }
 
 .result {
@@ -45,6 +106,12 @@ body {
 
 .ties {
 	color: cyan;
+}
+
+.js-reset-confirmation {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
 }
 
 .reset-score-button {
