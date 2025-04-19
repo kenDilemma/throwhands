@@ -175,10 +175,17 @@ body {
 
 /* Clean up all animations */
 
-/* Add a pulsing animation for chosen moves - smaller and faster */
+/* Simple pulse animation */
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); } 
+  100% { transform: scale(1); }
+}
+
+/* Subtle pulse for clicks */
+@keyframes clickPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); } 
   100% { transform: scale(1); }
 }
 
