@@ -8,23 +8,25 @@
     </head>
     <body>
         <div class="game-container">
-            <p class="title">Ronk Paper Sizurp</p>
+            <p class="title">Ronk Praper Serzers</p>
             <div class="button-container">
                 <button class="js-choose-rock move-button">
-                    <img src="images/rock-emoji.png" class="move-icon" />
+                    <img src="images/rock-emoji-neon.png" class="move-icon" />
                 </button>
         
                 <button class="move-button js-choose-paper">
-                    <img src="images/paper-emoji.png" class="move-icon" />
+                    <img src="images/paper-emoji-neon.png" class="move-icon" />
                 </button>
         
                 <button class="move-button js-choose-scissors">
-                    <img src="images/scissors-emoji.png" class="move-icon" />
+                    <img src="images/scissors-emoji-neon.png" class="move-icon" />
                 </button>
             </div>
     
             <div class="result-container">
-                <p class="js-moves"></p>
+                <p class="js-moves">
+                    <!-- Images will be inserted here by JavaScript -->
+                </p>
                 <p class="js-result result"></p>
                 <p class="js-score score"></p>
             </div>
@@ -35,9 +37,26 @@
                 </button>
         
                 <button class="auto-play-button js-auto-play">
-                    Auto Play
+                    Auto Playn
                 </button>
             </div>
+
+            <div class="instructions-container">
+                <button class="instructions-toggle js-instructions-toggle">
+                    Structions <span class="down-arrow"></span>
+                </button>
+                <div class="instructions-content js-instructions-content">
+                    <p class="instructions-intro">Click a hand button or...</p>
+                    <ul>
+                        <li><strong>R</strong> - Play Rock</li>
+                        <li><strong>P</strong> - Play Paper</li>
+                        <li><strong>S</strong> - Play Scissors</li>
+                        <li><strong>A</strong> - Toggle Auto Play</li>
+                        <li><strong>Backspace</strong> - Reset Score</li>
+                    </ul>
+                </div>
+            </div>
+
             <p class="js-reset-confirmation"></p>
             <script src="scripts/RPS.js"></script>
         </div>
