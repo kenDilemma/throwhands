@@ -1,12 +1,33 @@
+:root {
+  --text-color: white;
+  --background-color: rgb(25, 25, 25);
+  --heading-color: cyan;
+  --win-color: lime;
+  --lose-color: magenta;
+  --tie-color: cyan;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text-color: black;
+    --background-color: #f0f0f0;
+    --heading-color: #0088aa;
+    --win-color: green;
+    --lose-color: #cc0066;
+    --tie-color: #0088aa;
+  }
+}
+
 body {
-	background-color: rgb(25, 25, 25);
-	font-family: arial;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-	margin: 0;
-	padding: 0;
+  background-color: var(--background-color);
+  font-family: arial;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .game-container {
@@ -47,6 +68,7 @@ body {
 	font-size: 30px;
 	font-weight: bold;
     margin: 10px 0;
+    color: var(--heading-color);
 }
 
 .move-icon {
@@ -89,23 +111,25 @@ body {
 	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 10px;
+    color: var(--text-color);
 }
 
 .score {
 	margin-top: 10px;
 	margin-bottom: 10px;
+    color: var(--text-color);
 }
 
 .wins {
-	color: lime;
+	color: var(--win-color);
 }
 
 .losses {
-	color: magenta;
+	color: var(--lose-color);
 }
 
 .ties {
-	color: cyan;
+	color: var(--tie-color);
 }
 
 .js-reset-confirmation {
@@ -305,7 +329,7 @@ body {
 }
 
 .instructions-intro {
-    color: white;
+    color: var(--text-color);
     margin: 0 0 10px 0;
     text-align: left;
 }
