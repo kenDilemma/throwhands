@@ -13,6 +13,22 @@ let score = JSON.parse(localStorage.getItem("score")) || {
 	ties: 0,
 };
 
+// Add session stats tracking
+let sessionStats = {
+	startTime: Date.now(),
+	highestWinMargin: 0,
+	highestLossMargin: 0,
+	longestWinStreak: 0,
+	longestLoseStreak: 0,
+	currentWinStreak: 0,
+	currentLoseStreak: 0,
+	totalRounds: 0,
+	roundsUnder50: 0,
+	bestWinRateUnder50: 0,
+	fastestWin: null,  // Time to reach 5 wins
+	moveFrequency: { rock: 0, paper: 0, scissors: 0 }
+};
+
 updateScoreElement();
 
 /*document.querySelector(".js-result").innerHTML = result;
@@ -41,15 +57,35 @@ function autoPlay() {
 }
 
 function resetScore() {
-	score = {
-		wins: 0,
-		losses: 0,
-		ties: 0,
-	};
+  // Display session stats before resetting
+  displaySessionStats();
+  
+  // Reset score as before
+  score = {
+    wins: 0,
+    losses: 0,
+    ties: 0,
+  };
 
-	localStorage.setItem("score", JSON.stringify(score));
+  localStorage.setItem("score", JSON.stringify(score));
+  
+  // Reset session stats
+  sessionStats = {
+    startTime: Date.now(),
+    highestWinMargin: 0,
+    highestLossMargin: 0,
+    longestWinStreak: 0,
+    longestLoseStreak: 0,
+    currentWinStreak: 0,
+    currentLoseStreak: 0,
+    totalRounds: 0,
+    roundsUnder50: 0,
+    bestWinRateUnder50: 0,
+    fastestWin: null,
+    moveFrequency: { rock: 0, paper: 0, scissors: 0 }
+  };
 
-	updateScoreElement();
+  updateScoreElement();
 }
 
 function displayConfirmation() {
@@ -170,6 +206,9 @@ function playGame(playerMove) {
 
 	localStorage.setItem("score", JSON.stringify(score));
 
+	// Update session stats with the result and player's move
+	updateSessionStats(result, playerMove);
+
 	updateScoreElement();
 
 	// When updating results
@@ -222,6 +261,111 @@ function pickComputerMove() {
 	}
 
 	return computerMove;
+}
+
+function updateSessionStats(result, playerMove) {
+  // Increment total rounds
+  sessionStats.totalRounds++;
+  
+  // Track move frequency
+  sessionStats.moveFrequency[playerMove]++;
+  
+  // Update win/loss margin
+  const winMargin = score.wins - score.losses;
+  const lossMargin = score.losses - score.wins;
+  
+  if (winMargin > sessionStats.highestWinMargin) {
+    sessionStats.highestWinMargin = winMargin;
+  }
+  
+  if (lossMargin > sessionStats.highestLossMargin) {
+    sessionStats.highestLossMargin = lossMargin;
+  }
+  
+  // Track win/lose streaks
+  if (result === "You win.") {
+    sessionStats.currentWinStreak++;
+    sessionStats.currentLoseStreak = 0;
+    
+    if (sessionStats.currentWinStreak > sessionStats.longestWinStreak) {
+      sessionStats.longestWinStreak = sessionStats.currentWinStreak;
+    }
+  } else if (result === "You lose.") {
+    sessionStats.currentLoseStreak++;
+    sessionStats.currentWinStreak = 0;
+    
+    if (sessionStats.currentLoseStreak > sessionStats.longestLoseStreak) {
+      sessionStats.longestLoseStreak = sessionStats.currentLoseStreak;
+    }
+  } else {
+    // Tie doesn't affect streaks
+    sessionStats.currentWinStreak = 0;
+    sessionStats.currentLoseStreak = 0;
+  }
+  
+  // Track stats for games under 50 rounds
+  if (sessionStats.totalRounds <= 50) {
+    sessionStats.roundsUnder50 = sessionStats.totalRounds;
+    const winRate = score.wins / sessionStats.totalRounds;
+    
+    if (winRate > sessionStats.bestWinRateUnder50 && sessionStats.totalRounds >= 10) {
+      sessionStats.bestWinRateUnder50 = winRate;
+    }
+  }
+  
+  // Track fastest time to 5 wins
+  if (score.wins === 5 && sessionStats.fastestWin === null) {
+    sessionStats.fastestWin = Date.now() - sessionStats.startTime;
+  }
+}
+
+function displaySessionStats() {
+  // Skip if no games were played
+  if (sessionStats.totalRounds === 0) return;
+  
+  // Calculate some additional stats
+  const sessionDuration = Math.floor((Date.now() - sessionStats.startTime) / 1000); // in seconds
+  const favoriteMove = Object.entries(sessionStats.moveFrequency)
+    .sort((a, b) => b[1] - a[1])[0][0];
+  const winRate = ((score.wins / sessionStats.totalRounds) * 100).toFixed(1);
+  
+  // Create stats HTML
+  const statsHTML = `
+    <div class="session-stats">
+      <h3>Session Stats</h3>
+      <ul>
+        <li>Total Rounds: ${sessionStats.totalRounds}</li>
+        <li>Session Time: ${formatTime(sessionDuration)}</li>
+        <li>Win Rate: ${winRate}%</li>
+        <li>Highest Win Margin: ${sessionStats.highestWinMargin}</li>
+        <li>Highest Loss Margin: ${sessionStats.highestLossMargin}</li>
+        <li>Longest Win Streak: ${sessionStats.longestWinStreak}</li>
+        <li>Longest Loss Streak: ${sessionStats.longestLoseStreak}</li>
+        <li>Favorite Move: ${favoriteMove}</li>
+        ${sessionStats.fastestWin ? `<li>Time to 5 Wins: ${formatTime(sessionStats.fastestWin/1000)}</li>` : ''}
+        ${sessionStats.bestWinRateUnder50 > 0 ? `<li>Best Win Rate (First 50): ${(sessionStats.bestWinRateUnder50*100).toFixed(1)}%</li>` : ''}
+      </ul>
+      <button class="close-stats-button">Close</button>
+    </div>
+  `;
+  
+  // Create modal container
+  const modalContainer = document.createElement('div');
+  modalContainer.className = 'stats-modal';
+  modalContainer.innerHTML = statsHTML;
+  document.body.appendChild(modalContainer);
+  
+  // Add event listener to close button
+  modalContainer.querySelector('.close-stats-button').addEventListener('click', () => {
+    document.body.removeChild(modalContainer);
+  });
+}
+
+function formatTime(seconds) {
+  if (seconds < 60) return `${seconds} sec`;
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}m ${remainingSeconds}s`;
 }
 
 // Add to the end of your file if not already present
