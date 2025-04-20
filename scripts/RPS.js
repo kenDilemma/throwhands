@@ -263,6 +263,40 @@ function pickComputerMove() {
 	return computerMove;
 }
 
+// Add function to update the stats dropdown content
+function updateStatsDropdown() {
+  const statsContent = document.querySelector('.js-stats-content');
+  if (!statsContent) return;
+  
+  // Skip if no games were played
+  if (sessionStats.totalRounds === 0) {
+    statsContent.innerHTML = '<p>No games played yet in this session.</p>';
+    return;
+  }
+  
+  // Calculate some additional stats
+  const sessionDuration = Math.floor((Date.now() - sessionStats.startTime) / 1000); // in seconds
+  const favoriteMove = Object.entries(sessionStats.moveFrequency)
+    .sort((a, b) => b[1] - a[1])[0][0];
+  const winRate = ((score.wins / sessionStats.totalRounds) * 100).toFixed(1);
+  
+  // Create stats HTML
+  statsContent.innerHTML = `
+    <ul>
+      <li>Total Rounds: <span class="stats-highlight">${sessionStats.totalRounds}</span></li>
+      <li>Session Time: <span class="stats-highlight">${formatTime(sessionDuration)}</span></li>
+      <li>Win Rate: <span class="stats-highlight">${winRate}%</span></li>
+      <li>Highest Win Margin: <span class="stats-highlight">${sessionStats.highestWinMargin}</span></li>
+      <li>Highest Loss Margin: <span class="stats-highlight">${sessionStats.highestLossMargin}</span></li>
+      <li>Longest Win Streak: <span class="stats-highlight">${sessionStats.longestWinStreak}</span></li>
+      <li>Longest Loss Streak: <span class="stats-highlight">${sessionStats.longestLoseStreak}</span></li>
+      <li>Favorite Move: <span class="stats-highlight">${favoriteMove}</span></li>
+      ${sessionStats.fastestWin ? `<li>Time to 5 Wins: <span class="stats-highlight">${formatTime(sessionStats.fastestWin/1000)}</span></li>` : ''}
+      ${sessionStats.bestWinRateUnder50 > 0 ? `<li>Best Win Rate (First 50): <span class="stats-highlight">${(sessionStats.bestWinRateUnder50*100).toFixed(1)}%</span></li>` : ''}
+    </ul>
+  `;
+}
+
 function updateSessionStats(result, playerMove) {
   // Increment total rounds
   sessionStats.totalRounds++;
@@ -317,6 +351,9 @@ function updateSessionStats(result, playerMove) {
   if (score.wins === 5 && sessionStats.fastestWin === null) {
     sessionStats.fastestWin = Date.now() - sessionStats.startTime;
   }
+  
+  // Update the stats dropdown
+  updateStatsDropdown();
 }
 
 function displaySessionStats() {
@@ -370,9 +407,10 @@ function formatTime(seconds) {
 
 // Add to the end of your file if not already present
 document.addEventListener('DOMContentLoaded', function() {
-    const toggleButton = document.querySelector('.js-instructions-toggle');
-    if (toggleButton) {
-        toggleButton.addEventListener('click', function() {
+    // Instructions toggle
+    const instrToggleButton = document.querySelector('.js-instructions-toggle');
+    if (instrToggleButton) {
+        instrToggleButton.addEventListener('click', function() {
             const content = document.querySelector('.js-instructions-content');
             const arrow = this.querySelector('.down-arrow');
             
@@ -384,4 +422,25 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Instructions toggled');
         });
     }
+    
+    // Stats toggle
+    const statsToggleButton = document.querySelector('.js-stats-toggle');
+    if (statsToggleButton) {
+        statsToggleButton.addEventListener('click', function() {
+            const content = document.querySelector('.js-stats-content');
+            const arrow = this.querySelector('.down-arrow');
+            
+            // Toggle the content visibility
+            content.classList.toggle('show');
+            arrow.classList.toggle('open');
+            
+            // Update stats when opened
+            if (content.classList.contains('show')) {
+                updateStatsDropdown();
+            }
+        });
+    }
+    
+    // Initialize stats dropdown content
+    updateStatsDropdown();
 });

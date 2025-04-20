@@ -298,8 +298,9 @@ body {
     list-style: none;
     padding: 0;
     margin: 0 auto;
+    display: inline-block;
+    width: auto;
     text-align: left;
-    display: inline;
 }
 
 .instructions-content li {
@@ -312,6 +313,7 @@ body {
     content: "•";
     color: cyan;
     margin-right: 10px;
+    flex-shrink: 0;
 }
 
 .instructions-content strong {
@@ -324,7 +326,7 @@ body {
 .instructions-intro {
     color: var(--text-color);
     margin: 0 0 10px 0;
-    text-align: left;
+    text-align: center;
 }
 
 /* Add Session Stats Modal styling */
@@ -383,4 +385,45 @@ body {
 
 .close-stats-button:hover {
   transform: scale(1.05);
+}
+
+/* Stats dropdown styling */
+.stats-container {
+    margin-top: 5px;
+}
+
+.stats-toggle {
+    color: magenta;
+}
+
+.stats-toggle .down-arrow {
+    border-color: magenta;
+}
+
+.stats-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: inline-block;
+    width: auto;
+    text-align: left;
+}
+
+.stats-content li {
+    margin: 8px 0;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.stats-content li:before {
+    content: "•";
+    color: magenta;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.stats-highlight {
+    color: magenta;
+    font-weight: bold;
 }
